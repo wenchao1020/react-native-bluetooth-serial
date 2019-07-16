@@ -378,7 +378,12 @@ public class RCTBluetoothSerialModule extends ReactContextBaseJavaModule impleme
         int length = mBuffer.length();
         String data = mBuffer.substring(0, length);
         mBuffer.delete(0, length);
-        promise.resolve(data);
+        WritableArray writableArray = Arguments.createArray();
+        byte[] bytes = data.getBytes();
+        for(int i=0;i<bytes.length;i++){
+            writableArray.pushInt((int)bytes[i]);
+        }
+        promise.resolve(writableArray);
     }
 
     @ReactMethod
@@ -479,11 +484,19 @@ public class RCTBluetoothSerialModule extends ReactContextBaseJavaModule impleme
         mBuffer.append(data);
         String completeData = readUntil(this.delimiter);
         if (completeData != null && completeData.length() > 0) {
-            WritableMap params = Arguments.createMap();
-            params.putString("data", completeData);
-            sendEvent(DEVICE_READ, params);
-        }
-    }
+              WritableMap params = Arguments.createMap();
+              WritableArray writableArray = Arguments.createArray();
+              byte[] bytes = completeData.getBytes();
+        
+              for(int i=0;i<bytes.length;i++){
+                  writableArray.pushInt((int)bytes[i]);
+              }
+  
+              params.putArray("arr", writableArray);
+              params.putString("data", completeData);
+              sendEvent(DEVICE_READ, params);
+          }
+      }
 
     private String readUntil(String delimiter) {
         String data = "";
