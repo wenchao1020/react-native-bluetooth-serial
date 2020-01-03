@@ -41,7 +41,7 @@ public class RCTBluetoothSerialModule extends ReactContextBaseJavaModule impleme
     private static final String CONN_FAILED = "connectionFailed";
     private static final String CONN_LOST = "connectionLost";
     private static final String DEVICE_READ = "read";
-    private static final String ERROR = "error";
+    private static final String ERROR = "bluetoothError";
 
     // Other stuff
     private static final int REQUEST_ENABLE_BLUETOOTH = 1;
